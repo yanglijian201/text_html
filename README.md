@@ -51,6 +51,61 @@ npm start
 
 ## Docker 部署
 
+### 在 Mac 上构建多架构镜像
+
+如果你使用的是 Mac（特别是 Apple Silicon M1/M2/M3），需要为 Intel/AMD64 架构构建镜像：
+
+#### 方法 1：使用 --platform 参数（推荐）
+
+```bash
+# 为 Intel/AMD64 架构构建
+docker build --platform linux/amd64 -t html-validator:latest .
+
+# 运行容器
+docker run -d -p 8443:8443 --name html-validator-app html-validator:latest
+```
+
+#### 方法 2：使用 buildx 构建多架构镜像
+
+```bash
+# 创建并使用新的 builder（首次使用）
+docker buildx create --name multiarch-builder --use
+
+# 启动 builder
+docker buildx inspect --bootstrap
+
+# 构建多架构镜像（同时支持 ARM64 和 AMD64）
+docker buildx build \
+  --platform linux/amd64,linux/arm64 \
+  -t html-validator:latest \
+  --load \
+  .
+
+# 或者只构建 AMD64 架构
+docker buildx build \
+  --platform linux/amd64 \
+  -t html-validator:latest \
+  --load \
+  .
+```
+
+#### 方法 3：推送到 Docker Hub（支持多架构）
+
+```bash
+# 登录 Docker Hub
+docker login
+
+# 构建并推送多架构镜像
+docker buildx build \
+  --platform linux/amd64,linux/arm64 \
+  -t your-dockerhub-username/html-validator:latest \
+  --push \
+  .
+
+# 在其他机器上拉取
+docker pull your-dockerhub-username/html-validator:latest
+```
+
 ### 使用 Docker 构建和运行
 
 1. **构建 Docker 镜像：**
