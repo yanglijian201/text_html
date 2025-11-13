@@ -55,14 +55,30 @@ npm start
 
 如果你使用的是 Mac（特别是 Apple Silicon M1/M2/M3），需要为 Intel/AMD64 架构构建镜像：
 
+#### 快速构建命令（推荐）
+
+```bash
+# 禁用 BuildKit 并构建 Intel/AMD64 架构镜像
+DOCKER_BUILDKIT=0 docker build --platform linux/amd64 -t text_html:latest .
+
+# 运行容器
+docker run -d -p 8443:8443 --name html-validator-app text_html:latest
+
+# 查看日志
+docker logs -f html-validator-app
+
+# 访问应用
+open http://localhost:8443
+```
+
 #### 方法 1：使用 --platform 参数（推荐）
 
 ```bash
-# 为 Intel/AMD64 架构构建
-docker build --platform linux/amd64 -t html-validator:latest .
+# 为 Intel/AMD64 架构构建（禁用 BuildKit）
+DOCKER_BUILDKIT=0 docker build --platform linux/amd64 -t text_html:latest .
 
 # 运行容器
-docker run -d -p 8443:8443 --name html-validator-app html-validator:latest
+docker run -d -p 8443:8443 --name html-validator-app text_html:latest
 ```
 
 #### 方法 2：使用 buildx 构建多架构镜像
@@ -110,12 +126,16 @@ docker pull your-dockerhub-username/html-validator:latest
 
 1. **构建 Docker 镜像：**
 ```bash
-docker build -t html-validator:latest .
+# 标准构建
+docker build -t text_html:latest .
+
+# 或在 Mac 上为 Intel CPU 构建
+DOCKER_BUILDKIT=0 docker build --platform linux/amd64 -t text_html:latest .
 ```
 
 2. **运行容器：**
 ```bash
-docker run -d -p 8443:8443 --name html-validator-app html-validator:latest
+docker run -d -p 8443:8443 --name html-validator-app text_html:latest
 ```
 
 3. **访问应用：**
