@@ -1,14 +1,16 @@
 # HTML 验证和预览工具
 
-这是一个基于 React 的 HTML 验证和预览工具。用户可以输入 HTML 代码，工具会自动验证其有效性，并在验证通过后展示渲染效果。
+这是一个基于 React 的 HTML 验证和预览工具。用户可以输入 HTML 代码，工具会自动验证其有效性，并在新标签页中展示渲染效果。
 
 ## 功能特性
 
 - ✅ 实时 HTML 验证
-- ✅ 有效 HTML 的实时预览
+- ✅ 新标签页预览渲染效果
 - ✅ 友好的错误提示
 - ✅ 简洁的用户界面
 - ✅ 一键清空功能
+- ✅ Docker 容器化部署
+- ✅ Nginx 高性能服务
 
 ## 技术栈
 
@@ -16,8 +18,10 @@
 - JavaScript (ES6+)
 - CSS3
 - DOMParser API
+- Nginx (生产环境)
+- Docker
 
-## 安装和运行
+## 本地开发
 
 ### 前置要求
 
@@ -45,13 +49,135 @@ npm start
 
 5. 在浏览器中打开 [http://localhost:3000](http://localhost:3000)
 
+## Docker 部署
+
+### 使用 Docker 构建和运行
+
+1. **构建 Docker 镜像：**
+```bash
+docker build -t html-validator:latest .
+```
+
+2. **运行容器：**
+```bash
+docker run -d -p 8443:8443 --name html-validator-app html-validator:latest
+```
+
+3. **访问应用：**
+打开浏览器访问 [http://localhost:8443](http://localhost:8443)
+
+4. **查看容器日志：**
+```bash
+docker logs -f html-validator-app
+```
+
+5. **停止容器：**
+```bash
+docker stop html-validator-app
+```
+
+6. **删除容器：**
+```bash
+docker rm html-validator-app
+```
+
+### 使用 Docker Compose
+
+1. **启动服务：**
+```bash
+docker-compose up -d
+```
+
+2. **查看日志：**
+```bash
+docker-compose logs -f
+```
+
+3. **停止服务：**
+```bash
+docker-compose down
+```
+
+4. **重新构建并启动：**
+```bash
+docker-compose up -d --build
+```
+
+### Docker 镜像说明
+
+- **基础镜像**：Node 18 Alpine (构建阶段) + Nginx Alpine (运行阶段)
+- **暴露端口**：8443
+- **健康检查**：可通过 `/health` 端点检查服务状态
+- **多阶段构建**：优化镜像大小，减少安全风险
+- **镜像大小**：约 50MB（优化后）
+
+### 生产环境部署建议
+
+#### 1. 基础部署
+```bash
+docker run -d \
+  -p 8443:8443 \
+  --name html-validator-app \
+  --restart unless-stopped \
+  html-validator:latest
+```
+
+#### 2. 资源限制部署
+```bash
+docker run -d \
+  -p 8443:8443 \
+  --name html-validator-app \
+  --memory="512m" \
+  --cpus="1.0" \
+  --restart unless-stopped \
+  html-validator:latest
+```
+
+#### 3. 自定义 Nginx 配置
+```bash
+docker run -d \
+  -p 8443:8443 \
+  -v $(pwd)/nginx.conf:/etc/nginx/conf.d/default.conf:ro \
+  --name html-validator-app \
+  --restart unless-stopped \
+  html-validator:latest
+```
+
+#### 4. 使用 HTTPS（推荐生产环境）
+
+修改 `nginx.conf` 添加 SSL 配置：
+
+```nginx
+server {
+    listen 8443 ssl http2;
+    listen [::]:8443 ssl http2;
+    
+    ssl_certificate /etc/nginx/ssl/cert.pem;
+    ssl_certificate_key /etc/nginx/ssl/key.pem;
+    
+    # ... 其他配置
+}
+```
+
+运行容器时挂载证书：
+```bash
+docker run -d \
+  -p 8443:8443 \
+  -v $(pwd)/ssl:/etc/nginx/ssl:ro \
+  -v $(pwd)/nginx.conf:/etc/nginx/conf.d/default.conf:ro \
+  --name html-validator-app \
+  --restart unless-stopped \
+  html-validator:latest
+```
+
 ## 使用说明
 
 1. 在文本输入框中输入 HTML 代码
 2. 工具会自动验证 HTML 的有效性
-3. 如果 HTML 有效，下方会显示✅标识和渲染后的效果
-4. 如果 HTML 无效，会显示❌标识和错误提示信息
-5. 点击"清空"按钮可以清除所有内容
+3. 如果 HTML 有效，会显示 ✅ 标识
+4. 点击"在新标签页预览"按钮，HTML 将在新窗口中渲染
+5. 如果 HTML 无效，会显示 ❌ 标识和错误提示信息
+6. 点击"清空"按钮可以清除所有内容
 
 ### 示例 HTML
 
