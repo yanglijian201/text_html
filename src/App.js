@@ -43,20 +43,71 @@ function App() {
     setErrorMessage('');
   };
 
+  const handlePreviewInNewTab = () => {
+    if (!isValid) {
+      alert('请先输入有效的 HTML 代码');
+      return;
+    }
+
+    // 创建完整的 HTML 文档
+    const fullHTML = `
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HTML 预览</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 20px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+        'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+${htmlInput}
+</body>
+</html>
+    `.trim();
+
+    // 打开新标签页
+    const newTab = window.open('', '_blank');
+    
+    if (newTab) {
+      newTab.document.open();
+      newTab.document.write(fullHTML);
+      newTab.document.close();
+    } else {
+      alert('无法打开新标签页，请检查浏览器的弹窗拦截设置');
+    }
+  };
+
   return (
     <div className="App">
       <header className="App-header">
         <h1>HTML 验证和预览工具</h1>
-        <p>输入 HTML 代码进行验证和预览</p>
+        <p>输入 HTML 代码进行验证，并在新标签页中预览</p>
       </header>
 
       <main className="App-main">
         <div className="input-section">
           <div className="section-header">
             <h2>HTML 输入</h2>
-            <button className="clear-button" onClick={handleClear}>
-              清空
-            </button>
+            <div className="button-group">
+              <button 
+                className="preview-button" 
+                onClick={handlePreviewInNewTab}
+                disabled={!isValid}
+              >
+                在新标签页预览
+              </button>
+              <button className="clear-button" onClick={handleClear}>
+                清空
+              </button>
+            </div>
           </div>
           <textarea
             className="html-input"
@@ -74,7 +125,7 @@ function App() {
               {isValid === true && (
                 <div className="valid-message">
                   <span className="icon">✅</span>
-                  <span>HTML 格式有效</span>
+                  <span>HTML 格式有效 - 点击上方按钮在新标签页中预览</span>
                 </div>
               )}
               {isValid === false && (
@@ -83,18 +134,6 @@ function App() {
                   <span>{errorMessage}</span>
                 </div>
               )}
-            </div>
-          </div>
-        )}
-
-        {isValid === true && (
-          <div className="preview-section">
-            <h2>渲染预览</h2>
-            <div className="preview-container">
-              <div
-                className="preview-content"
-                dangerouslySetInnerHTML={{ __html: htmlInput }}
-              />
             </div>
           </div>
         )}

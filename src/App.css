@@ -32,8 +32,7 @@
 }
 
 .input-section,
-.validation-section,
-.preview-section {
+.validation-section {
   background: white;
   border-radius: 8px;
   padding: 1.5rem;
@@ -54,6 +53,35 @@
   margin: 0;
 }
 
+.button-group {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.preview-button {
+  background-color: #667eea;
+  color: white;
+  border: none;
+  padding: 0.5rem 1.5rem;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-weight: 500;
+}
+
+.preview-button:hover:not(:disabled) {
+  background-color: #5568d3;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(102, 126, 234, 0.3);
+}
+
+.preview-button:disabled {
+  background-color: #9ca3af;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
 .clear-button {
   background-color: #ef4444;
   color: white;
@@ -62,16 +90,19 @@
   border-radius: 6px;
   font-size: 1rem;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: all 0.3s;
+  font-weight: 500;
 }
 
 .clear-button:hover {
   background-color: #dc2626;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(239, 68, 68, 0.3);
 }
 
 .html-input {
   width: 100%;
-  min-height: 300px;
+  min-height: 400px;
   padding: 1rem;
   font-family: 'Courier New', monospace;
   font-size: 14px;
@@ -80,14 +111,14 @@
   resize: vertical;
   outline: none;
   transition: border-color 0.3s;
+  line-height: 1.5;
 }
 
 .html-input:focus {
   border-color: #667eea;
 }
 
-.validation-section h2,
-.preview-section h2 {
+.validation-section h2 {
   font-size: 1.5rem;
   color: #333;
   margin-bottom: 1rem;
@@ -128,28 +159,13 @@
   font-size: 1.5rem;
 }
 
-.preview-container {
-  border: 2px solid #e5e7eb;
-  border-radius: 6px;
-  padding: 1.5rem;
-  background-color: #ffffff;
-  min-height: 200px;
-}
-
-.preview-content {
-  line-height: 1.6;
-}
-
-.preview-content * {
-  max-width: 100%;
-}
-
 .App-footer {
   background-color: #f9fafb;
   padding: 1.5rem;
   text-align: center;
   color: #6b7280;
   border-top: 1px solid #e5e7eb;
+  margin-top: auto;
 }
 
 .App-footer p {
@@ -177,11 +193,17 @@
     gap: 1rem;
   }
 
+  .button-group {
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .preview-button,
   .clear-button {
     width: 100%;
   }
 
   .html-input {
-    min-height: 200px;
+    min-height: 300px;
   }
 }
