@@ -1,0 +1,187 @@
+.App {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.App-header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 2rem;
+  text-align: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.App-header h1 {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+  font-weight: 700;
+}
+
+.App-header p {
+  font-size: 1.1rem;
+  opacity: 0.9;
+}
+
+.App-main {
+  flex: 1;
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.input-section,
+.validation-section,
+.preview-section {
+  background: white;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.section-header h2 {
+  font-size: 1.5rem;
+  color: #333;
+  margin: 0;
+}
+
+.clear-button {
+  background-color: #ef4444;
+  color: white;
+  border: none;
+  padding: 0.5rem 1.5rem;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.clear-button:hover {
+  background-color: #dc2626;
+}
+
+.html-input {
+  width: 100%;
+  min-height: 300px;
+  padding: 1rem;
+  font-family: 'Courier New', monospace;
+  font-size: 14px;
+  border: 2px solid #e5e7eb;
+  border-radius: 6px;
+  resize: vertical;
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+.html-input:focus {
+  border-color: #667eea;
+}
+
+.validation-section h2,
+.preview-section h2 {
+  font-size: 1.5rem;
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+.validation-result {
+  padding: 1rem;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+.validation-result.valid {
+  background-color: #d1fae5;
+  border: 2px solid #10b981;
+}
+
+.validation-result.invalid {
+  background-color: #fee2e2;
+  border: 2px solid #ef4444;
+}
+
+.valid-message,
+.invalid-message {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.valid-message {
+  color: #065f46;
+}
+
+.invalid-message {
+  color: #991b1b;
+}
+
+.icon {
+  font-size: 1.5rem;
+}
+
+.preview-container {
+  border: 2px solid #e5e7eb;
+  border-radius: 6px;
+  padding: 1.5rem;
+  background-color: #ffffff;
+  min-height: 200px;
+}
+
+.preview-content {
+  line-height: 1.6;
+}
+
+.preview-content * {
+  max-width: 100%;
+}
+
+.App-footer {
+  background-color: #f9fafb;
+  padding: 1.5rem;
+  text-align: center;
+  color: #6b7280;
+  border-top: 1px solid #e5e7eb;
+}
+
+.App-footer p {
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .App-header h1 {
+    font-size: 1.8rem;
+  }
+
+  .App-header p {
+    font-size: 1rem;
+  }
+
+  .App-main {
+    padding: 1rem;
+  }
+
+  .section-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .clear-button {
+    width: 100%;
+  }
+
+  .html-input {
+    min-height: 200px;
+  }
+}
